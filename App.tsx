@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet, View } from "react-native";
 import { Home } from "./src/Home";
+import { Wave } from "./src/Wave";
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Colorful" component={Colorful} />
+          <Stack.Screen name="Wave" component={Wave} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

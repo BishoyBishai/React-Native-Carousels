@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-const carousels = ["Colorful"];
+const carousels = ["Colorful", "Wave"];
 
 const Home = () => {
   const { navigate } = useNavigation();
@@ -21,8 +21,8 @@ const Home = () => {
               onPress={goToCarousel(item)}
               style={{
                 borderColor: "#c7c7c7",
-                borderWidth: 1,
-                marginBottom: "16px",
+                borderBottomWidth: 1,
+                marginBottom: 8,
                 padding: 16,
               }}
             >
