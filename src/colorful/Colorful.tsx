@@ -5,7 +5,7 @@ import { StatusBar } from "expo-status-bar";
 const { width, height } = Dimensions.get("screen");
 
 const imageW = width * 0.7;
-const imageH = imageW * 1.54;
+const imageH = imageW * 1.4;
 
 const Colorful = () => {
   const scrollX = React.useRef(new Animated.Value(0)).current;
