@@ -78,7 +78,6 @@ const BackDrop = ({
 
 const Wave = () => {
   const insets = useSafeAreaInsets();
-  const safeHeight = height - (insets.bottom + insets.top);
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const _data = ["", ...data, ""];
 
