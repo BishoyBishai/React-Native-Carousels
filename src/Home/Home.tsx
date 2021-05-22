@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-const carousels = ["Colorful", "Wave"];
+export const carouselsList = ["Colorful", "Wave", "Product"];
 
 const Home = () => {
   const { navigate } = useNavigation();
@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <View>
       <FlatList
-        data={carousels}
+        data={carouselsList}
         keyExtractor={(_) => _}
         renderItem={({ item }) => {
           return (
