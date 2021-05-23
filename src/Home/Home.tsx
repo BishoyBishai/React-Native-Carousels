@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-export const carouselsList = ["Colorful", "Wave", "Product"];
+export const carouselsList = ["Colorful", "Wave", "Product", "Tabs"];
 
 const Home = () => {
   const { navigate } = useNavigation();

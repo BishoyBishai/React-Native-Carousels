@@ -1,11 +1,10 @@
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import {
   View,
-  Text,
-  FlatList,
-  Image,
   Dimensions,
   Platform,
+  FlatList,
+  TouchableOpacity,
 } from "react-native";
 import { data } from "./data";
 import { StyleSheet } from "react-native";
@@ -16,7 +15,13 @@ const PRODUCT_HEIGHT = height * 0.5;
 const TICKER_HEIGHT = 40;
 const CIRCLE_HEIGHT = width * 0.6;
 
-const Pagination = ({ scrollX }: { scrollX: Animated.Value }) => {
+const Pagination = ({
+  scrollX,
+  onPress,
+}: {
+  scrollX: Animated.Value;
+  onPress: (index: number) => void;
+}) => {
   const inputRange = [-width, 0, width];
   const translateX = scrollX.interpolate({
     inputRange,
@@ -27,8 +32,9 @@ const Pagination = ({ scrollX }: { scrollX: Animated.Value }) => {
       <Animated.View
         style={[styles.paginationItemWrapper, { transform: [{ translateX }] }]}
       />
-      {data.map((product) => (
-        <View
+      {data.map((product, index) => (
+        <TouchableOpacity
+          onPress={() => onPress(index)}
           key={product.id}
           style={[styles.paginationItem, { backgroundColor: product.color }]}
         />
@@ -98,12 +104,17 @@ const Circle = ({ scrollX }: { scrollX: Animated.Value }) => {
 
 const Product = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
+  const ref = useRef<FlatList<any>>();
+  const handleNavigate = useCallback((index) => {
+    ref.current?.scrollToOffset({ offset: index * width });
+  }, []);
   return (
     <View style={styles.container}>
       <Circle scrollX={scrollX} />
 
       <Animated.FlatList
         horizontal
+        ref={ref as any}
         data={data}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
@@ -166,7 +177,7 @@ const Product = () => {
           );
         }}
       />
-      <Pagination scrollX={scrollX} />
+      <Pagination scrollX={scrollX} onPress={handleNavigate} />
       <Ticker scrollX={scrollX} />
     </View>
   );
