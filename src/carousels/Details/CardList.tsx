@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   FlatList,
   Image,
   SafeAreaView,
+  Animated,
 } from "react-native";
 import data from "./data";
 import { Dimensions } from "react-native";
@@ -18,19 +19,43 @@ const SPACING = 16;
 const ITEM_HEIGHT = height * 0.16;
 const CardList = () => {
   const { navigate } = useNavigation();
-
+  const scrollY = useRef(new Animated.Value(0)).current;
   const navigateTo = (item: any) => () => navigate("CardDetails", { item });
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
+      <Animated.FlatList
         data={data}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true }
+        )}
         showsVerticalScrollIndicator={false}
+        scrollEventThrottle={16}
         keyExtractor={(_) => _.key}
         contentContainerStyle={{ padding: SPACING }}
         renderItem={({ item, index }) => {
+          const inputRange = [
+            -1,
+            0,
+            ITEM_HEIGHT * index,
+            ITEM_HEIGHT * (index + 2),
+          ];
+          const opacity = scrollY.interpolate({
+            inputRange,
+            outputRange: [1, 1, 1, 0],
+          });
+          const scale = scrollY.interpolate({
+            inputRange,
+            outputRange: [1, 1, 1, 0],
+          });
           return (
             <TouchableOpacity onPress={navigateTo(item)}>
-              <View style={styles.cardContainer}>
+              <Animated.View
+                style={[
+                  styles.cardContainer,
+                  { opacity, transform: [{ scale }] },
+                ]}
+              >
                 <SharedElement
                   id={`item.${item.key}.bg`}
                   style={[
@@ -60,7 +85,7 @@ const CardList = () => {
                     source={{ uri: item.image }}
                   />
                 </SharedElement>
-              </View>
+              </Animated.View>
             </TouchableOpacity>
           );
         }}

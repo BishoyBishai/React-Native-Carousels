@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
 
   cardDetails: {
-    height: height - TOP_HEADER_HEIGHT,
+    height: height,
     width,
     position: "absolute",
     backgroundColor: "#fff",
