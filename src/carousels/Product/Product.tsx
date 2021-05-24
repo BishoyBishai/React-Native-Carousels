@@ -9,6 +9,8 @@ import {
 import { data } from "./data";
 import { StyleSheet } from "react-native";
 import { Animated } from "react-native";
+import { SafeAreaView } from "react-native";
+import { Text } from "react-native";
 const { width, height } = Dimensions.get("screen");
 
 const PRODUCT_HEIGHT = height * 0.5;
@@ -109,7 +111,7 @@ const Product = () => {
     ref.current?.scrollToOffset({ offset: index * width });
   }, []);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Circle scrollX={scrollX} />
 
       <Animated.FlatList
@@ -152,7 +154,7 @@ const Product = () => {
             outputRange: [width * 0.2, 0, -width * 0.2],
           });
           return (
-            <View style={styles.productItem}>
+            <SafeAreaView style={styles.productItem}>
               <Animated.Image
                 source={item.imageUri}
                 style={[styles.productImage, { transform: [{ scale }] }]}
@@ -173,13 +175,13 @@ const Product = () => {
               >
                 {item.description}
               </Animated.Text>
-            </View>
+            </SafeAreaView>
           );
         }}
       />
       <Pagination scrollX={scrollX} onPress={handleNavigate} />
       <Ticker scrollX={scrollX} />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -251,6 +253,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     overflow: "hidden",
     height: TICKER_HEIGHT,
+    top: 50,
   },
 
   tickerText: {

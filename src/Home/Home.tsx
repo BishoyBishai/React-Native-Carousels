@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import { Text, TouchableOpacity, FlatList, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-export const carouselsList = ["Colorful", "Wave", "Product", "Tabs"];
+export const carouselsList = ["Colorful", "Wave", "Product", "Tabs", "Details"];
 
 const Home = () => {
   const { navigate } = useNavigation();
@@ -11,7 +11,7 @@ const Home = () => {
     navigate(route);
   };
   return (
-    <View>
+    <SafeAreaView>
       <FlatList
         data={carouselsList}
         keyExtractor={(_) => _}
@@ -38,7 +38,7 @@ const Home = () => {
           );
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

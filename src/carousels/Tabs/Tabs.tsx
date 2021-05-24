@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
 
   tabItemsContainer: {
     position: "absolute",
-    top: 20,
+    top: 70,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
