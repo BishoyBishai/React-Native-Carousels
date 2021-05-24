@@ -6,6 +6,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { CardProps, detailsIcons } from "./data";
 import { ScrollView } from "react-native-gesture-handler";
 import * as Animatable from "react-native-animatable";
+import { SharedElement } from "react-navigation-shared-element";
 
 const SPACING = 16;
 const DURATION = 400;
@@ -14,10 +15,10 @@ const TOP_HEADER_HEIGHT = height * 0.32;
 
 const CardDetails = ({ route }: { route: Route<any> }) => {
   const { item } = route.params as { item: CardProps };
-  let cardNameID, CardID;
   return (
     <View style={styles.container}>
-      <View
+      <SharedElement
+        id={`item.${item.key}.bg`}
         style={[
           StyleSheet.absoluteFillObject,
           {
@@ -25,67 +26,91 @@ const CardDetails = ({ route }: { route: Route<any> }) => {
             height: TOP_HEADER_HEIGHT + 32,
           },
         ]}
-      />
-      <View>
+      >
+        <View />
+      </SharedElement>
+      <SharedElement id={`item.${item.key}.name`}>
         <Text style={styles.cardName}>{item.name}</Text>
-      </View>
-      <Image style={styles.cardImage} source={{ uri: item.image }} />
-      <View style={styles.cardDetails}>
-        <ScrollView>
-          <View style={styles.cardActions}>
-            {detailsIcons.map((_, index) => (
-              <Animatable.View
-                animation="bounceIn"
-                delay={DURATION + index * 100}
-                key={_.icon}
-                style={[styles.actionIcon, { backgroundColor: _.color }]}
-              >
-                <AntDesign name={_.icon as any} color={"white"} size={24} />
-              </Animatable.View>
-            ))}
-          </View>
-          <View style={styles.categoriesContainer}>
-            {item.categories.map((cat, index) => {
-              return (
+      </SharedElement>
+      <SharedElement id={`item.${item.key}.image`}>
+        <Image style={styles.cardImage} source={{ uri: item.image }} />
+      </SharedElement>
+      <SharedElement id="item.details">
+        <View style={styles.cardDetails}>
+          <ScrollView>
+            <View style={styles.cardActions}>
+              {detailsIcons.map((_, index) => (
                 <Animatable.View
-                  animation="fadeInUp"
-                  delay={DURATION * 2 + index * 200}
-                  key={cat.key}
-                  style={styles.category}
+                  animation="bounceIn"
+                  delay={DURATION + index * 100}
+                  key={_.icon}
+                  style={[styles.actionIcon, { backgroundColor: _.color }]}
                 >
-                  <Text
-                    style={{
-                      fontWeight: "700",
-                      fontSize: 16,
-                      marginVertical: SPACING / 2,
-                    }}
-                  >
-                    {cat.title}
-                  </Text>
-                  <View style={styles.subCategoryContainer}>
-                    {cat.subCats.map((sub, index) => (
-                      <Text
-                        style={{
-                          fontWeight: "400",
-                          fontSize: 12,
-                          opacity: 0.8,
-                          marginVertical: SPACING / 2,
-                        }}
-                        key={sub + index}
-                      >
-                        {" "}
-                        {sub}
-                      </Text>
-                    ))}
-                  </View>
+                  <AntDesign name={_.icon as any} color={"white"} size={24} />
                 </Animatable.View>
-              );
-            })}
-          </View>
-        </ScrollView>
-      </View>
+              ))}
+            </View>
+            <View style={styles.categoriesContainer}>
+              {item.categories.map((cat, index) => {
+                return (
+                  <Animatable.View
+                    animation="fadeInUp"
+                    delay={DURATION * 2 + index * 200}
+                    key={cat.key}
+                    style={styles.category}
+                  >
+                    <Text
+                      style={{
+                        fontWeight: "700",
+                        fontSize: 16,
+                        marginVertical: SPACING / 2,
+                      }}
+                    >
+                      {cat.title}
+                    </Text>
+                    <View style={styles.subCategoryContainer}>
+                      {cat.subCats.map((sub, index) => (
+                        <Text
+                          style={{
+                            fontWeight: "400",
+                            fontSize: 12,
+                            opacity: 0.8,
+                            marginVertical: SPACING / 2,
+                          }}
+                          key={sub + index}
+                        >
+                          {" "}
+                          {sub}
+                        </Text>
+                      ))}
+                    </View>
+                  </Animatable.View>
+                );
+              })}
+            </View>
+          </ScrollView>
+        </View>
+      </SharedElement>
     </View>
   );
+};
+
+CardDetails.sharedElements = (route: Route<any>) => {
+  const { item } = route.params as { item: CardProps };
+  return [
+    {
+      id: `item.${item.key}.bg`,
+    },
+    {
+      id: `item.${item.key}.name`,
+    },
+    {
+      id: `item.${item.key}.image`,
+    },
+    {
+      id: `item.details`,
+    },
+  ];
 };
 
 export default CardDetails;
@@ -111,7 +136,7 @@ const styles = StyleSheet.create({
     height: ITEM_HEIGHT * 0.8,
     resizeMode: "contain",
     position: "absolute",
-    top: TOP_HEADER_HEIGHT - ITEM_HEIGHT * 0.8,
+    top: TOP_HEADER_HEIGHT - ITEM_HEIGHT * 0.8 + 10,
     right: SPACING,
   },
   cardName: {
@@ -120,10 +145,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: TOP_HEADER_HEIGHT - SPACING * 2,
     left: SPACING,
+    width: 500,
   },
 
   cardDetails: {
-    height,
+    height: height - TOP_HEADER_HEIGHT,
     width,
     position: "absolute",
     backgroundColor: "#fff",

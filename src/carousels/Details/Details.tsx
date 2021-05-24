@@ -2,8 +2,9 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import CardList from './CardList';
 import CardDetails from "./CardDetails";
+import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 
-const Stack = createStackNavigator();
+const Stack = createSharedElementStackNavigator();
 
 const Details = () => {
   return (
